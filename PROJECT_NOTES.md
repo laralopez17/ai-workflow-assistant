@@ -55,8 +55,8 @@ Every tool call is registered, logged, and testable. Fake providers keep CI dete
 
 ## Initial milestone plan
 
-1. **P0** — Docs and agent guidance (this milestone)
-2. **P1** — FastAPI skeleton, config, health endpoint
+1. **P0** — Docs and agent guidance — **complete**
+2. **P1** — FastAPI skeleton, config, health endpoint — **complete**
 3. **P2** — Domain models and structured schemas
 4. **P3** — Internal tool registry and safe invocation
 5. **P4** — Workflow engine with planning, execution, and traces
@@ -64,6 +64,18 @@ Every tool call is registered, logged, and testable. Fake providers keep CI dete
 7. **P6** — SQLite persistence for runs and traces
 8. **P7** — Optional OpenAI provider for demos
 9. **P8** — Docker, docs polish, portfolio narrative
+
+## P1 — FastAPI skeleton
+
+P1 establishes the backend foundation only:
+
+- `src/` layout with package `ai_workflow_assistant`
+- `pyproject.toml` for packaging and dependencies (FastAPI, uvicorn, pydantic, pydantic-settings)
+- Centralized settings via `pydantic-settings` (`APP_NAME`, `APP_VERSION`, `ENVIRONMENT`)
+- Thin health route at `GET /health`
+- pytest coverage for the health endpoint using FastAPI's `TestClient`
+
+No agent logic, tool registry, workflow engine, LLM providers, or persistence was added in P1.
 
 ## Learning goals
 

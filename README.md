@@ -79,4 +79,36 @@ The system is intentionally not a magical autonomous agent. It is a controlled, 
 
 ## Status
 
-**P0 in progress** — initial documentation and project guidance.
+**P1 complete** — FastAPI skeleton with `src/` layout, config, health endpoint, and tests.
+
+**P0 complete** — initial documentation and project guidance.
+
+## Local setup
+
+Requires Python 3.11+.
+
+```bash
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# macOS/Linux
+source .venv/bin/activate
+
+pip install -e ".[dev]"
+```
+
+Run the API:
+
+```bash
+uvicorn ai_workflow_assistant.main:app --reload
+```
+
+Then open `http://127.0.0.1:8000/health`.
+
+Run tests:
+
+```bash
+pytest
+```
