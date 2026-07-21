@@ -79,9 +79,20 @@ The system is intentionally not a magical autonomous agent. It is a controlled, 
 
 ## Status
 
+**P2 complete** — domain models and API schemas for notes, runs, steps, and structured outputs.
+
 **P1 complete** — FastAPI skeleton with `src/` layout, config, health endpoint, and tests.
 
 **P0 complete** — initial documentation and project guidance.
+
+## Core domain concepts
+
+- **ProjectNote** — the original messy input; v1 requires only `content`
+- **WorkflowRun** — one full execution from input note to optional final report
+- **WorkflowStep** — one internal processing step inside a run (trace building block)
+- **FinalReport** — structured user-facing output (summary, actions, blockers, plan, gaps)
+- **ActionItem** — an extracted task with priority, status, and optional confidence/source
+- **Blocker** — a risk, dependency, or impediment that may block progress
 
 ## Local setup
 

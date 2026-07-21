@@ -57,7 +57,7 @@ Every tool call is registered, logged, and testable. Fake providers keep CI dete
 
 1. **P0** — Docs and agent guidance — **complete**
 2. **P1** — FastAPI skeleton, config, health endpoint — **complete**
-3. **P2** — Domain models and structured schemas
+3. **P2** — Domain models and structured schemas — **complete**
 4. **P3** — Internal tool registry and safe invocation
 5. **P4** — Workflow engine with planning, execution, and traces
 6. **P5** — Fake LLM/provider + pytest coverage
@@ -76,6 +76,23 @@ P1 establishes the backend foundation only:
 - pytest coverage for the health endpoint using FastAPI's `TestClient`
 
 No agent logic, tool registry, workflow engine, LLM providers, or persistence was added in P1.
+
+## P2 — Domain models and API schemas
+
+P2 defines the data contracts and domain vocabulary only:
+
+- Domain enums: `Priority`, `TaskStatus`, `WorkflowStatus`, `StepStatus`
+- Domain models: `ProjectNote`, `ActionItem`, `Blocker`, `ChecklistItem`, `ExecutionPlan`, `WorkflowStep`, `FinalReport`, `WorkflowRun`
+- API schemas: `WorkflowRunRequest`, `WorkflowRunResponse` (no endpoint yet)
+- Validation tests for empty content, invalid confidence, and core construction paths
+
+Decisions recorded in P2:
+
+- **Content-only input for v1** — the user provides `content`; title, project name, and requested output are not required
+- **Structured outputs** — the system returns typed models (`FinalReport`, `ActionItem`, etc.), not generic free text
+- **`missing_info` and `assumptions`** — models surface gaps instead of inventing missing details
+- **Workflow traces are part of the design** — `WorkflowRun.steps` holds `WorkflowStep` entries for auditability
+- **Tool registry deferred to P3** — `WorkflowStep.tool_name` is a minimal hook; deep `ToolCallTrace` waits for later milestones
 
 ## Learning goals
 
