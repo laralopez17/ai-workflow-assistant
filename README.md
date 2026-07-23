@@ -79,11 +79,21 @@ The system is intentionally not a magical autonomous agent. It is a controlled, 
 
 ## Status
 
+**P3 complete** — internal tool registry with structured I/O and a deterministic example tool.
+
 **P2 complete** — domain models and API schemas for notes, runs, steps, and structured outputs.
 
 **P1 complete** — FastAPI skeleton with `src/` layout, config, health endpoint, and tests.
 
 **P0 complete** — initial documentation and project guidance.
+
+## Internal tool registry
+
+- Tools are controlled backend capabilities, not external integrations
+- Each tool declares a name, description, Pydantic input/output models, and a handler
+- Execution returns a structured `ToolExecutionResult` (`success` or `failed`)
+- Unknown tool names raise `ToolNotFoundError`
+- P3 does not use LLMs; `classify_project_note` is deterministic keyword logic for architecture testing
 
 ## Core domain concepts
 

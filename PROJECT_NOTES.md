@@ -58,7 +58,7 @@ Every tool call is registered, logged, and testable. Fake providers keep CI dete
 1. **P0** — Docs and agent guidance — **complete**
 2. **P1** — FastAPI skeleton, config, health endpoint — **complete**
 3. **P2** — Domain models and structured schemas — **complete**
-4. **P3** — Internal tool registry and safe invocation
+4. **P3** — Internal tool registry and safe invocation — **complete**
 5. **P4** — Workflow engine with planning, execution, and traces
 6. **P5** — Fake LLM/provider + pytest coverage
 7. **P6** — SQLite persistence for runs and traces
@@ -93,6 +93,25 @@ Decisions recorded in P2:
 - **`missing_info` and `assumptions`** — models surface gaps instead of inventing missing details
 - **Workflow traces are part of the design** — `WorkflowRun.steps` holds `WorkflowStep` entries for auditability
 - **Tool registry deferred to P3** — `WorkflowStep.tool_name` is a minimal hook; deep `ToolCallTrace` waits for later milestones
+
+## P3 — Internal tool registry
+
+P3 adds tool infrastructure only:
+
+- `ToolRegistry` for exact-name register/get/list/execute
+- `RegisteredTool` with structured input/output models and an `execute` method
+- Custom errors: `ToolAlreadyRegisteredError`, `ToolNotFoundError`
+- Structured `ToolExecutionResult` for success and failure paths
+- One deterministic example tool: `classify_project_note`
+
+Decisions recorded in P3:
+
+- **Registry before workflow execution** — tools exist as an explicit capability layer first
+- **Tools are explicit and controlled** — only registered tools can be invoked; names match exactly
+- **Input/output validation** — Pydantic models constrain tool I/O before any LLM planner exists
+- **Structured execution errors** — validation/handler failures return failed results with concise messages (no stack traces); unknown tools still raise
+- **`classify_project_note` is architectural scaffolding** — keyword rules only; not real AI intelligence
+- **Executor and LLM planner deferred** — no `/workflows/run`, no providers, no persistence in P3
 
 ## Learning goals
 
