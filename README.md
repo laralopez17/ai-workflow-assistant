@@ -79,6 +79,8 @@ The system is intentionally not a magical autonomous agent. It is a controlled, 
 
 ## Status
 
+**P4 complete** — minimal `WorkflowExecutor` that runs `classify_project_note` and records a `WorkflowStep`.
+
 **P3 complete** — internal tool registry with structured I/O and a deterministic example tool.
 
 **P2 complete** — domain models and API schemas for notes, runs, steps, and structured outputs.
@@ -86,6 +88,14 @@ The system is intentionally not a magical autonomous agent. It is a controlled, 
 **P1 complete** — FastAPI skeleton with `src/` layout, config, health endpoint, and tests.
 
 **P0 complete** — initial documentation and project guidance.
+
+## Workflow executor
+
+- Receives a `ToolRegistry` through its constructor (no auto-registration)
+- Executes one deterministic step: `classify_project_note`
+- Records the outcome as a `WorkflowStep` on a `WorkflowRun`
+- Returns a completed or failed `WorkflowRun` (including missing-tool configuration failures)
+- Does not call any LLM yet and does not generate a `FinalReport`
 
 ## Internal tool registry
 

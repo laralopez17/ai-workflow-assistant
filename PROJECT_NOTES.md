@@ -59,7 +59,7 @@ Every tool call is registered, logged, and testable. Fake providers keep CI dete
 2. **P1** — FastAPI skeleton, config, health endpoint — **complete**
 3. **P2** — Domain models and structured schemas — **complete**
 4. **P3** — Internal tool registry and safe invocation — **complete**
-5. **P4** — Workflow engine with planning, execution, and traces
+5. **P4** — Workflow engine with planning, execution, and traces — **complete**
 6. **P5** — Fake LLM/provider + pytest coverage
 7. **P6** — SQLite persistence for runs and traces
 8. **P7** — Optional OpenAI provider for demos
@@ -112,6 +112,24 @@ Decisions recorded in P3:
 - **Structured execution errors** — validation/handler failures return failed results with concise messages (no stack traces); unknown tools still raise
 - **`classify_project_note` is architectural scaffolding** — keyword rules only; not real AI intelligence
 - **Executor and LLM planner deferred** — no `/workflows/run`, no providers, no persistence in P3
+
+## P4 — Minimal workflow executor
+
+P4 connects domain models to the tool registry with a single deterministic step:
+
+- `WorkflowExecutor(tool_registry)` via constructor injection
+- `run(project_note) -> WorkflowRun`
+- Exactly one required tool: `classify_project_note`
+- Records a `WorkflowStep` and returns completed or failed `WorkflowRun`
+
+Decisions recorded in P4:
+
+- **Executor after models and registry** — execution sits on top of existing contracts
+- **Constructor dependency injection** — executor never creates or auto-registers tools
+- **One deterministic step only** — no planner or multi-step agent logic yet
+- **Missing tools are configuration failures** — return a failed run/step with a clear message, do not raise to the caller
+- **Failed tool execution fails the run** — step and run both marked `failed` with the tool error
+- **Deferred intentionally** — `FinalReport`, planner, LLM providers, API endpoint, and persistence wait for later milestones
 
 ## Learning goals
 
